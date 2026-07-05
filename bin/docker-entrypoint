@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+# If running the rails server then create or migrate existing database, then
+# reconcile seed data (db/seeds.rb is idempotent, safe to run on every boot —
+# this is what keeps the admin account in sync if ADMIN_PASSWORD changes).
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  ./bin/rails db:prepare
+  ./bin/rails db:seed
+fi
+
+exec "${@}"

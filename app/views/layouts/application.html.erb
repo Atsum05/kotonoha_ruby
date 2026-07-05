@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Kotonoha Nippon Club" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Kotonoha Nippon Club">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <%= link_to root_path, class: "brand" do %>
+        <%= image_tag "logos/logo-wordmark-salmon.png", alt: "Kotonoha Nippon Club", class: "brand-logo" %>
+      <% end %>
+
+      <nav class="site-nav">
+        <%= link_to "Sobre Kotonoha", about_path %>
+        <%= link_to "Eventos", events_path %>
+        <%= link_to "Staff", staffs_path %>
+
+        <% if current_user %>
+          <span class="site-nav-user">Hola, <%= current_user.email %></span>
+          <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete, class: "btn-link" %>
+        <% else %>
+          <%= link_to "Iniciar sesión", new_user_session_path %>
+        <% end %>
+      </nav>
+    </header>
+
+    <% if notice %>
+      <p class="flash flash-notice"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="flash flash-alert"><%= alert %></p>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>

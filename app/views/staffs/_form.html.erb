@@ -1,0 +1,76 @@
+<%= form_with model: staff, local: true, class: "event-form" do |f| %>
+  <% if staff.errors.any? %>
+    <div class="form-errors">
+      <p><strong><%= pluralize(staff.errors.count, "error") %> impidieron guardar este staff:</strong></p>
+      <ul>
+        <% staff.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nombre, "Nombre" %>
+    <%= f.text_field :nombre %>
+  </div>
+
+  <div class="field">
+    <%= f.label :staff_category_id, "Categoría" %>
+    <%= f.collection_select :staff_category_id, @categories, :id, :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cargo, "Cargo" %>
+    <%= f.text_field :cargo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :carrera, "Carrera" %>
+    <%= f.text_field :carrera %>
+  </div>
+
+  <div class="field">
+    <%= f.label :birth_date, "Fecha de nacimiento" %>
+    <%= f.date_field :birth_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :university_start_date, "Ingreso a la universidad" %>
+    <%= f.date_field :university_start_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :kotonoha_start_date, "Ingreso a Kotonoha" %>
+    <%= f.date_field :kotonoha_start_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :correo, "Correo" %>
+    <%= f.email_field :correo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :linkedin_url, "LinkedIn" %>
+    <%= f.url_field :linkedin_url, placeholder: "https://linkedin.com/in/..." %>
+  </div>
+
+  <div class="field">
+    <%= f.label :interests, "Intereses" %>
+    <%= f.text_area :interests, rows: 3 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :photo, "Foto" %>
+    <% if staff.photo.attached? %>
+      <div class="current-image">
+        <%= image_tag staff.photo, class: "event-image-preview" %>
+      </div>
+    <% end %>
+    <%= f.file_field :photo, accept: "image/png,image/jpeg,image/webp" %>
+  </div>
+
+  <div class="field">
+    <%= f.submit staff.new_record? ? "Crear staff" : "Guardar cambios", class: "btn-primary" %>
+  </div>
+<% end %>

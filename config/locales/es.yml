@@ -1,0 +1,28 @@
+es:
+  activerecord:
+    attributes:
+      event:
+        title: "título"
+        description: "descripción"
+        event_date: "fecha del evento"
+        location: "lugar"
+        capacity: "cupos"
+        form_url: "link de inscripción"
+        image: "imagen"
+      staff:
+        nombre: "nombre"
+        cargo: "cargo"
+        staff_category: "categoría"
+        carrera: "carrera"
+        birth_date: "fecha de nacimiento"
+        university_start_date: "ingreso a la universidad"
+        kotonoha_start_date: "ingreso a Kotonoha"
+        correo: "correo"
+        linkedin_url: "LinkedIn"
+        interests: "intereses"
+        photo: "foto"
+      staff_category:
+        name: "nombre"
+      user:
+        email: "correo electrónico"
+        password: "contraseña"

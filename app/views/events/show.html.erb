@@ -1,0 +1,40 @@
+<section class="event-show">
+  <%= link_to "&larr; Volver a eventos".html_safe, events_path, class: "btn-secondary" %>
+
+  <% if @event.image.attached? %>
+    <%= image_tag @event.image, class: "event-show-image" %>
+  <% end %>
+
+  <h1><%= @event.title %></h1>
+
+  <p class="event-date"><%= @event.event_date.strftime("%d de %B de %Y, %H:%M") %></p>
+  <% if @event.location.present? %>
+    <p class="event-location"><%= @event.location %></p>
+  <% end %>
+  <p class="event-capacity">
+    <%= @event.unlimited_capacity? ? "Cupos ilimitados" : "#{@event.capacity} cupos" %>
+  </p>
+
+  <% if @event.hidden? %>
+    <p class="event-flag">Este evento está oculto de la página pública.</p>
+  <% end %>
+  <% if @event.past? %>
+    <p class="event-flag">Este evento ya pasó.</p>
+  <% end %>
+
+  <% if @event.description.present? %>
+    <div class="event-description"><%= simple_format(@event.description) %></div>
+  <% end %>
+
+  <% if @event.form_url.present? %>
+    <%= link_to "Inscribirse", @event.form_url, target: "_blank", rel: "noopener", class: "btn-primary" %>
+  <% end %>
+
+  <% if current_user&.admin? %>
+    <div class="event-actions">
+      <%= link_to "Editar", edit_event_path(@event), class: "btn-secondary" %>
+      <%= button_to (@event.hidden? ? "Mostrar" : "Ocultar"), toggle_hidden_event_path(@event), method: :patch, class: "btn-link" %>
+      <%= button_to "Eliminar", @event, method: :delete, class: "btn-link", data: { turbo_confirm: "¿Seguro que quieres eliminar este evento?" } %>
+    </div>
+  <% end %>
+</section>

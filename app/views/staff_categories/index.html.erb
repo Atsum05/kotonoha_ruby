@@ -1,0 +1,46 @@
+<section class="staff-categories-page">
+  <%= link_to "&larr; Volver al staff".html_safe, staffs_path, class: "btn-secondary" %>
+
+  <h1>Categorías de staff</h1>
+  <p class="empty-state">
+    El orden de arriba hacia abajo es el orden jerárquico en que se muestran en la página de staff.
+  </p>
+
+  <ul class="category-list">
+    <% @categories.each do |category| %>
+      <li class="category-row">
+        <span class="category-name"><%= category.name %></span>
+        <span class="category-count"><%= pluralize(category.staffs.count, "persona") %></span>
+
+        <div class="category-actions">
+          <%= button_to "↑", move_up_staff_category_path(category), method: :patch, class: "btn-link", title: "Subir" %>
+          <%= button_to "↓", move_down_staff_category_path(category), method: :patch, class: "btn-link", title: "Bajar" %>
+          <%= button_to "Eliminar", staff_category_path(category), method: :delete, class: "btn-link",
+                data: { turbo_confirm: "¿Seguro que quieres eliminar la categoría #{category.name}?" } %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <h2>Agregar categoría</h2>
+  <%= form_with model: @category, url: staff_categories_path, local: true, class: "event-form" do |f| %>
+    <% if @category.errors.any? %>
+      <div class="form-errors">
+        <ul>
+          <% @category.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name, "Nombre de la categoría" %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= f.submit "Agregar categoría", class: "btn-primary" %>
+    </div>
+  <% end %>
+</section>

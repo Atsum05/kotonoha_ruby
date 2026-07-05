@@ -1,0 +1,40 @@
+databases:
+  - name: kotonoha-db
+    databaseName: kotonoha_ruby_production
+    user: kotonoha
+    plan: free
+
+services:
+  - type: web
+    name: kotonoha-web
+    runtime: docker
+    plan: free
+    healthCheckPath: /up
+    envVars:
+      # Deliberately not named DATABASE_URL — see the comment in
+      # config/database.yml for why that name specifically breaks.
+      - key: APP_DATABASE_URL
+        fromDatabase:
+          name: kotonoha-db
+          property: connectionString
+
+      # Secrets: set these manually in the Render dashboard after the first
+      # deploy (sync: false means Render won't try to read a value from this
+      # file, so nothing sensitive ends up committed to the repo).
+      #   RAILS_MASTER_KEY — the contents of config/master.key
+      #   ADMIN_EMAIL / ADMIN_PASSWORD — for the one seeded admin account
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+    # The free plan's disk is ephemeral: uploaded event/staff photos will be
+    # lost on every redeploy or restart. Uncomment this (and switch the plan
+    # above off "free", since persistent disks require a paid instance) once
+    # that matters for you:
+    # disk:
+    #   name: kotonoha-storage
+    #   mountPath: /rails/storage
+    #   sizeGB: 1

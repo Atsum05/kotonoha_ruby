@@ -1,0 +1,30 @@
+<section class="events-page">
+  <div class="events-header">
+    <h1>Eventos</h1>
+    <% if current_user&.admin? %>
+      <%= link_to "Crear evento", new_event_path, class: "btn-primary" %>
+    <% end %>
+  </div>
+
+  <h2>Próximos eventos</h2>
+  <% if @upcoming_events.any? %>
+    <div class="event-grid">
+      <% @upcoming_events.each do |event| %>
+        <%= render "event_card", event: event %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="empty-state">No hay eventos próximos por ahora.</p>
+  <% end %>
+
+  <h2>Eventos pasados</h2>
+  <% if @past_events.any? %>
+    <div class="event-grid">
+      <% @past_events.each do |event| %>
+        <%= render "event_card", event: event %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="empty-state">Aún no hay eventos pasados.</p>
+  <% end %>
+</section>

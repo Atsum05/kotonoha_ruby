@@ -1,0 +1,30 @@
+<section class="staffs-page">
+  <div class="staffs-header">
+    <h1>Nuestro Staff</h1>
+    <% if current_user&.admin? %>
+      <div class="staffs-header-actions">
+        <%= link_to "Gestionar categorías", staff_categories_path, class: "btn-secondary" %>
+        <%= link_to "Agregar staff", new_staff_path, class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <% @categories.each do |category| %>
+    <% members = @staffs_by_category[category] %>
+    <% next if members.blank? %>
+
+    <section class="staff-category">
+      <h2><%= category.name %></h2>
+
+      <div class="staff-grid">
+        <% members.each do |staff| %>
+          <%= render "staff_card", staff: staff %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <% if @staffs_by_category.blank? %>
+    <p class="empty-state">Aún no hay staff registrado.</p>
+  <% end %>
+</section>

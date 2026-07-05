@@ -1,0 +1,31 @@
+<div class="event-card">
+  <%= link_to event do %>
+    <% if event.image.attached? %>
+      <%= image_tag event.image, class: "event-card-image" %>
+    <% else %>
+      <div class="event-card-image event-card-image--placeholder">
+        <%= image_tag "logos/logo-outline-brown.png", alt: "" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="event-card-body">
+    <% if event.hidden? %>
+      <p class="event-flag">Oculto</p>
+    <% end %>
+    <h3><%= link_to event.title, event %></h3>
+    <p class="event-date"><%= event.event_date.strftime("%d de %B de %Y, %H:%M") %></p>
+    <p class="event-capacity">
+      <%= event.unlimited_capacity? ? "Cupos ilimitados" : "#{event.capacity} cupos" %>
+    </p>
+
+    <% if event.form_url.present? %>
+      <%= link_to "Inscribirse", event.form_url, target: "_blank", rel: "noopener", class: "btn-secondary" %>
+    <% end %>
+
+    <% if current_user&.admin? %>
+      <%= link_to "Editar", edit_event_path(event), class: "btn-link" %>
+      <%= button_to (event.hidden? ? "Mostrar" : "Ocultar"), toggle_hidden_event_path(event), method: :patch, class: "btn-link" %>
+    <% end %>
+  </div>
+</div>

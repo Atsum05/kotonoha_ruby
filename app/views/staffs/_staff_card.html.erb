@@ -1,0 +1,52 @@
+<div class="staff-card">
+  <% if staff.photo.attached? %>
+    <%= image_tag staff.photo, class: "staff-card-photo" %>
+  <% else %>
+    <div class="staff-card-photo staff-card-photo--placeholder">
+      <%= image_tag "logos/logo-outline-brown.png", alt: "" %>
+    </div>
+  <% end %>
+
+  <div class="staff-card-body">
+    <h3><%= staff.nombre %></h3>
+    <p class="staff-cargo"><%= staff.cargo %></p>
+    <% if staff.carrera.present? %>
+      <p class="staff-detail"><%= staff.carrera %></p>
+    <% end %>
+
+    <ul class="staff-facts">
+      <% if staff.edad %>
+        <li><%= staff.edad %> años</li>
+      <% end %>
+      <% if staff.anos_en_la_u %>
+        <li><%= staff.anos_en_la_u %> año<%= "s" if staff.anos_en_la_u != 1 %> en la U</li>
+      <% end %>
+      <% if staff.tiempo_en_kotonoha %>
+        <li><%= staff.tiempo_en_kotonoha %> en Kotonoha</li>
+      <% end %>
+    </ul>
+
+    <% if staff.interests.present? %>
+      <p class="staff-interests"><strong>Intereses:</strong> <%= staff.interests %></p>
+    <% end %>
+
+    <div class="staff-links">
+      <% if staff.correo.present? %>
+        <%= mail_to staff.correo, "Correo", class: "btn-link" %>
+      <% end %>
+      <% if staff.linkedin_url.present? %>
+        <%= link_to "LinkedIn", staff.linkedin_url, target: "_blank", rel: "noopener", class: "btn-link" %>
+      <% end %>
+    </div>
+
+    <% if current_user&.admin? %>
+      <div class="staff-admin-actions">
+        <%= button_to "↑", move_up_staff_path(staff), method: :patch, class: "btn-link", title: "Subir" %>
+        <%= button_to "↓", move_down_staff_path(staff), method: :patch, class: "btn-link", title: "Bajar" %>
+        <%= link_to "Editar", edit_staff_path(staff), class: "btn-link" %>
+        <%= button_to "Eliminar", staff_path(staff), method: :delete, class: "btn-link",
+              data: { turbo_confirm: "¿Seguro que quieres eliminar a #{staff.nombre}?" } %>
+      </div>
+    <% end %>
+  </div>
+</div>
